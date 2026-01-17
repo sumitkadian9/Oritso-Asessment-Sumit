@@ -10,4 +10,7 @@ public class User : BaseEntity
     public Role Role { get; set; }
     public string PasswordHash { get; set; }
     public string PasswordSalt { get; set; }
+
+    // Navigation prop
+    public ICollection<TodoTask> TodoTasks { get; set; } = [];
 }

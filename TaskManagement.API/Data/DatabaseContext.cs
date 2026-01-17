@@ -8,6 +8,7 @@ namespace TaskManagement.API.Data;
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<User> Users { get; set; }
+    public DbSet<TodoTask> TodoTasks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {   
