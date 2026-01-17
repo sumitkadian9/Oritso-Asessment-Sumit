@@ -1,4 +1,5 @@
 using TaskManagement.API.Extensions;
+using TaskManagement.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,8 @@ app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseMiddleware<AuthMiddleware>();
 
 app.MapControllers();
 
