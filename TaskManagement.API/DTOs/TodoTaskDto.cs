@@ -11,4 +11,6 @@ public class TodoTaskDto
     public TaskCompletionStatus Status { get; set;}
     public string Remarks { get; set; }
     public UserMinDto User { get; set; }
+    public long CreatedOn { get; set; }
+    public long LastUpdatedOn { get; set; }
 }

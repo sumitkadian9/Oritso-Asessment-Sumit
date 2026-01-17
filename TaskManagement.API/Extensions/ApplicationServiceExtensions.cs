@@ -19,6 +19,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ITodoTaskService, TodoTaskService>();
 
         return services;
     }
