@@ -34,4 +34,19 @@ public static class CustomErrors
         public static Error InvalidCredentials => new Error("Invalid credentials")
             .WithMetadata("ErrorCode", ErrorCode.InvalidCredentials);
     }
+
+    public static class TodoTask
+    {
+        public static Error TodoTaskNotFound => new Error("Task not found")
+            .WithMetadata("ErrorCode", ErrorCode.TodoTaskNotFound);
+        
+        public static Error TodoTaskUpdateFailed => new Error("Failed to update task")
+            .WithMetadata("ErrorCode", ErrorCode.TodoTaskUpdateFailed);
+        
+        public static Error TodoTaskDeletionFailed => new Error("Failed to delete task")
+            .WithMetadata("ErrorCode", ErrorCode.TodoTaskDeletionFailed);
+        
+        public static Error TodoTaskCreationFailed => new Error("Failed to create task")
+            .WithMetadata("ErrorCode", ErrorCode.TodoTaskCreationFailed);
+    }
 }

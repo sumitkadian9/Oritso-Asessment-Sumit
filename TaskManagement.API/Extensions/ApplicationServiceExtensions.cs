@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.API.Data;
 using TaskManagement.API.Interfaces;
+using TaskManagement.API.Middlewares;
 using TaskManagement.API.Services;
 
 namespace TaskManagement.API.Extensions;
@@ -19,6 +20,8 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ITodoTaskService, TodoTaskService>();
+        services.AddScoped<ExceptionHandlingMiddleware>();
 
         return services;
     }

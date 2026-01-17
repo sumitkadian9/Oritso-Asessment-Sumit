@@ -14,4 +14,8 @@ public enum ErrorCode
     UserUpdateFailed = 9,
     PasswordUpdateFailed = 10,
     InvalidCredentials = 11,
+    TodoTaskNotFound = 12,
+    TodoTaskUpdateFailed = 13,
+    TodoTaskDeletionFailed = 14,
+    TodoTaskCreationFailed = 15
 }

@@ -39,4 +39,48 @@ public static class MappingExtensions
             Role = entity.Role
         };
     }
+
+    public static TodoTask ToEntity(this TodoTaskDto dto, UserDto currentUser, long timestamp)
+    {
+        return new TodoTask
+        {
+            Title = dto.Title,
+            Description = dto.Description,
+            DueDate = dto.DueDate,
+            Status = dto.Status,
+            Remarks = dto.Remarks,
+            UserId = currentUser.Id
+        }.SetMetaData(currentUser.Id, timestamp);
+    }
+
+    public static TodoTask UpdateFromDto(this TodoTask todoTask, TodoTaskDto dto, UserDto currentUser, long timestamp)
+    {
+        todoTask.Title = dto.Title;
+        todoTask.Description = dto.Description;
+        todoTask.DueDate = dto.DueDate;
+        todoTask.Status = dto.Status;
+        todoTask.Remarks = dto.Remarks;
+        todoTask.SetMetaData(currentUser.Id, timestamp, Enums.EntityState.Modified);
+        return todoTask;
+    }
+
+    public static TodoTaskDto ToDto(this TodoTask entity)
+    {
+        return new TodoTaskDto
+        {
+            Id = entity.Id,
+            Description = entity.Description,
+            DueDate = entity.DueDate,
+            Status = entity.Status,
+            Remarks = entity.Remarks,
+            CreatedOn = entity.CreatedOn,
+            LastUpdatedOn = entity.LastUpdatedOn,
+            User = entity.User != null ? new UserMinDto
+            {
+                Id = entity.UserId,
+                FirstName = entity.User.FirstName,
+                LastName = entity.User.LastName
+            } : null
+        };
+    }
 }
