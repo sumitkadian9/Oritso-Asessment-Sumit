@@ -103,4 +103,20 @@ export class Dashboard implements OnInit {
       });
     }
   }
+
+  handleDelete(id: string) {
+    if (confirm('Are you sure you want to delete this task?')) {
+      this.todoService.deleteTodoTask(id).subscribe({
+        next: () => {
+          this.loadTasks();
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Delete failed', err);
+          alert('Could not delete the task.');
+        }
+      });
+    }
+  }
+
 }
