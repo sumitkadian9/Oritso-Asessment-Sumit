@@ -47,13 +47,20 @@ I utilized a code-first approach using EF Core as an ORM. This ensures the Domai
 The project utilizes Single Page Application (SPA) with API Binding
 
 The project uses a decoupled SPA architecture:
+
 Backend: ASP.NET Core 9.0 Web API (REST).
+
  -- Backend has N-tier architecture with presentation layer (controllers), business layer(services), and data layer (ef dbContext)
+
  -- Authentication/Authorization via bearer scheme using JWT tokens
+ 
  -- Key dependencies: FluentResults (for result pattern), NSwag (for swagger UI and openAPI specs), Pomelo.EntityFrameworkCore.MySQL for connecting to MySql Database.
 
+
 Frontend: Angular 21.
+ 
  -- Binding: The frontend communicates with the backend via asynchronous HTTP calls using Angular's HttpClient, secured with JWT.
+ 
  -- Styling: Tailwind was used to rapidly create responsive UI pages.
 
 Database: MySQL 8.0.31
@@ -63,15 +70,15 @@ Database: Ensure MySQL is running and update connection in appsettings.json.
 To build the project follow these instructions (In command prompt or terminal or similar):
 
 For backend:
-cd TaskManagement.API
-dotnet restore
-dotnet ef database update
-dotnet build
+`cd TaskManagement.API`
+`dotnet restore`
+`dotnet ef database update`
+`dotnet build`
 
 For frontend:
-cd TaskManagement.Web
-npm install
-npm run build
+`cd TaskManagement.Web`
+`npm install`
+`npm run build`
 
 
 ### Instructions to Run
