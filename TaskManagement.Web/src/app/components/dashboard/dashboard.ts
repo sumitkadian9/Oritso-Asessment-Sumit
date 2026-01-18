@@ -47,7 +47,7 @@ export class Dashboard implements OnInit {
   }
 
   loadTasks() {
-    this.todoService.getTodoTasks().subscribe({
+    this.todoService.getTodoTasks(this.searchQuery, this.pageNumber, this.pageSize).subscribe({
       next: (data) => {
         this.tasks = data
         this.cdr.detectChanges();
