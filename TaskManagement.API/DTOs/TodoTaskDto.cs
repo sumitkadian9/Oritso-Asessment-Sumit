@@ -4,7 +4,7 @@ namespace TaskManagement.API.DTOs;
 
 public class TodoTaskDto
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public DateOnly DueDate { get; set; }

@@ -7,7 +7,7 @@ public static class MappingExtensions
 {
     public static User ToEntity(this RegisterDto dto, PasswordHashWithSalt password, UserDto currentUser, long timestamp)
     {
-        return new User
+        var newUser = new User
         {
             FirstName = dto.FirstName,
             LastName = dto.LastName,
@@ -15,7 +15,11 @@ public static class MappingExtensions
             Role = Enums.Role.Member,
             PasswordHash = password.Hash,
             PasswordSalt = password.Salt
-        }.SetMetaData(currentUser.Id, timestamp);
+        };
+
+        newUser.SetMetaData(currentUser?.Id ?? newUser.Id, timestamp);
+
+        return newUser;
     }
 
     public static User UpdateFromDto(this User user, UserDto dto, UserDto currentUser, long timestamp)
@@ -69,6 +73,7 @@ public static class MappingExtensions
         return new TodoTaskDto
         {
             Id = entity.Id,
+            Title = entity.Title,
             Description = entity.Description,
             DueDate = entity.DueDate,
             Status = entity.Status,

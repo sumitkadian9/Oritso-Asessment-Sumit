@@ -21,7 +21,7 @@ public class TMAuthorize(params Role[] allowedRoles) : Attribute, IAuthorization
                 UserDto user = (UserDto)context.HttpContext.Items["User"];
                 if(user is null)
                 {
-                    SetUnauthorizedResult(context, "No authorization token provided or token was expired/invalid");
+                    SetUnauthorizedResult(context, "Invalid token");
                 }
 
                 if(_allowedRoles.Length != 0 && !_allowedRoles.Contains(user.Role))
@@ -31,7 +31,7 @@ public class TMAuthorize(params Role[] allowedRoles) : Attribute, IAuthorization
             }
             else
             {
-                SetUnauthorizedResult(context, "No authorization token provided");
+                SetUnauthorizedResult(context, "Invalid token");
             }   
         }
     }
