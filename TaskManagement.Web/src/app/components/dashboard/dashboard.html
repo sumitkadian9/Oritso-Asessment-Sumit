@@ -1,0 +1,94 @@
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-base font-semibold text-gray-900">Tasks</h1>
+      <p class="mt-2 text-sm text-gray-700">A list of all your tasks</p>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none space-x-2">
+      <button type="button"
+        class="inline-flex rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500">Create
+        Task</button>
+      <button (click)="logout()" type="button"
+        class="inline-flex rounded-md bg-red-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-red-500">Logout</button>
+    </div>
+  </div>
+
+  <div class="mt-4 mb-4">
+    <input type="text" (input)="onSearch($event)" placeholder="  Search..."
+      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm">
+  </div>
+  <div class="mt-8 flow-root">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead>
+            <tr>
+              <th class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900">Title</th>
+              <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Description</th>
+              <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Due Date</th>
+              <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+              <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Remarks</th>
+              <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Created By</th>
+              <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Created On</th>
+              <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Updated On</th>
+              <th class="relative py-3.5 pr-4 pl-3"><span class="sr-only">Edit</span></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <tr *ngFor="let task of tasks">
+              <td class="py-4 pr-3 pl-4 text-sm font-medium text-gray-900">{{ task.title }}</td>
+              <td class="px-3 py-4 text-sm text-gray-500">{{ task.description }}</td>
+              <td class="px-3 py-4 text-sm text-gray-500">{{ task.dueDate }}</td>
+              <td class="px-3 py-4 text-sm text-gray-500">
+                <span class="rounded-full px-2 py-1 text-xs font-medium"
+                  [ngClass]="{'bg-green-100 text-green-800': task.status === statusEnum.Completed, 'bg-yellow-100 text-yellow-800': task.status === statusEnum.Pending}">
+                  {{ statusEnum[task.status] }}
+                </span>
+              </td>
+              <td class="px-3 py-4 text-sm text-gray-500">{{ task.remarks }}</td>
+              <td class="px-3 py-4 text-sm text-gray-500">{{ task.user?.firstName }} {{ task.user?.lastName }}</td>
+              <td class="px-3 py-4 text-sm text-gray-500">{{ formatDate(task.createdOn) }}</td>
+              <td class="px-3 py-4 text-sm text-gray-500">{{ formatDate(task.lastUpdatedOn) }}</td>
+              <td class="py-4 pr-4 pl-3 text-right text-sm font-medium">
+                <button class="text-indigo-600 hover:text-indigo-900">Edit</button>
+              </td>
+            </tr>
+            <tr *ngIf="tasks.length === 0">
+              <td colspan="9" class="py-10 text-center text-sm text-gray-500">No tasks found. Create one to get started!
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+    <div class="flex flex-1 justify-between sm:hidden">
+      <button (click)="prevPage()" [disabled]="pageNumber === 1"
+        class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50">Previous</button>
+      <button (click)="nextPage()" [disabled]="tasks.length < pageSize"
+        class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50">Next</button>
+    </div>
+    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+      <div>
+        <p class="text-sm text-gray-700">
+          Showing Page <span class="font-medium">{{ pageNumber }}</span>
+        </p>
+      </div>
+      <div>
+        <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+          <button (click)="prevPage()" [disabled]="pageNumber === 1"
+            class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50">
+            <span class="sr-only">Previous</span>
+            <span class="h-5 w-5">&lt;</span>
+          </button>
+          <button (click)="nextPage()" [disabled]="tasks.length < pageSize"
+            class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50">
+            <span class="sr-only">Next</span>
+            <span class="h-5 w-5">&gt;</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>

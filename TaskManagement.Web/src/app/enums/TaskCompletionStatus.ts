@@ -1,5 +1,6 @@
 export enum TaskCompletionStatus
 {
     Pending = 0,
-    Completed = 1
+    InProgress = 1,
+    Completed = 2
 }
