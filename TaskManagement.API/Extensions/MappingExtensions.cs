@@ -69,6 +69,7 @@ public static class MappingExtensions
         return new TodoTaskDto
         {
             Id = entity.Id,
+            Title = entity.Title,
             Description = entity.Description,
             DueDate = entity.DueDate,
             Status = entity.Status,

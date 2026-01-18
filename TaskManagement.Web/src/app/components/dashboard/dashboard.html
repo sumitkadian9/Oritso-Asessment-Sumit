@@ -5,7 +5,7 @@
       <p class="mt-2 text-sm text-gray-700">A list of all your tasks</p>
     </div>
     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none space-x-2">
-      <button type="button"
+      <button (click)="openCreateModal()" type="button"
         class="inline-flex rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500">Create
         Task</button>
       <button (click)="logout()" type="button"
@@ -50,7 +50,7 @@
               <td class="px-3 py-4 text-sm text-gray-500">{{ formatDate(task.createdOn) }}</td>
               <td class="px-3 py-4 text-sm text-gray-500">{{ formatDate(task.lastUpdatedOn) }}</td>
               <td class="py-4 pr-4 pl-3 text-right text-sm font-medium">
-                <button class="text-indigo-600 hover:text-indigo-900">Edit</button>
+                <button (click)="openEditModal(task)" class="text-indigo-600 hover:text-indigo-900">Edit</button>
               </td>
             </tr>
             <tr *ngIf="tasks.length === 0">
@@ -92,3 +92,10 @@
     </div>
   </div>
 </div>
+
+<app-task-form 
+  *ngIf="showModal" 
+  [taskToEdit]="selectedTask" 
+  (close)="showModal = false" 
+  (saved)="handleSave($event)">
+</app-task-form>

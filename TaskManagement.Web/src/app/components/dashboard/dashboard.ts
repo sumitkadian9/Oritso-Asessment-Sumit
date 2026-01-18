@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { TodoTaskDto } from '../../dtos/TodoTaskDto';
 import { TaskCompletionStatus } from '../../enums/TaskCompletionStatus';
 import { TodoTaskService } from '../../services/todo-task-service';
@@ -6,18 +6,23 @@ import { AccountService } from '../../services/account-service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { TaskForm } from "../task-form/task-form";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, TaskForm],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
-  standalone: true
+  standalone: true,
 })
 export class Dashboard implements OnInit {
+  private cdr = inject(ChangeDetectorRef);
   private todoService = inject(TodoTaskService);
   private accountService = inject(AccountService);
   private router = inject(Router);
+
+  showModal = false;
+  selectedTask: TodoTaskDto | null = null;
 
   tasks: TodoTaskDto[] = [];
   statusEnum = TaskCompletionStatus;
@@ -28,10 +33,7 @@ export class Dashboard implements OnInit {
   pageSize: number = 20;
 
   ngOnInit(): void {
-    this.searchSubject.pipe(
-      debounceTime(400),  
-      distinctUntilChanged()
-    ).subscribe(term => {
+    this.searchSubject.pipe(debounceTime(400), distinctUntilChanged()).subscribe((term) => {
       this.searchQuery = term;
       this.pageNumber = 1;
       this.loadTasks();
@@ -46,8 +48,11 @@ export class Dashboard implements OnInit {
 
   loadTasks() {
     this.todoService.getTodoTasks().subscribe({
-      next: (data) => this.tasks = data,
-      error: (err) => console.error('Error fetching tasks', err)
+      next: (data) => {
+        this.tasks = data
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error fetching tasks', err),
     });
   }
 
@@ -70,6 +75,32 @@ export class Dashboard implements OnInit {
     if (this.pageNumber > 1) {
       this.pageNumber--;
       this.loadTasks();
+    }
+  }
+
+  openCreateModal() {
+    this.selectedTask = null;
+    this.showModal = true;
+  }
+
+  openEditModal(task: TodoTaskDto) {
+    this.selectedTask = task;
+    this.showModal = true;
+  }
+
+  handleSave(taskData: TodoTaskDto) {
+    if (this.selectedTask) {
+      // Update existing
+      this.todoService.updateTodoTask(taskData).subscribe(() => {
+        this.showModal = false;
+        this.loadTasks();
+      });
+    } else {
+      // Create new
+      this.todoService.createTodoTask(taskData).subscribe(() => {
+        this.showModal = false;
+        this.loadTasks();
+      });
     }
   }
 }

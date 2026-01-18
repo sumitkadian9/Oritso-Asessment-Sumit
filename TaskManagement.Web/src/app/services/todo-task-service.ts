@@ -7,6 +7,7 @@ import { TodoTaskDto } from '../dtos/TodoTaskDto';
 @Injectable({
   providedIn: 'root',
 })
+
 export class TodoTaskService {
   private http = inject(HttpClient);
   private url = `${environment.apiUrl}/TodoTasks`;
@@ -21,5 +22,17 @@ export class TodoTaskService {
     }
 
     return this.http.get<TodoTaskDto[]>(this.url, { params });
+  }
+
+  createTodoTask(task: TodoTaskDto): Observable<TodoTaskDto> {
+    return this.http.post<TodoTaskDto>(this.url, task);
+  }
+
+  updateTodoTask(task: TodoTaskDto): Observable<number> {
+    return this.http.put<number>(this.url, task);
+  }
+
+  deleteTodoTask(id: string): Observable<number> {
+    return this.http.delete<number>(`${this.url}/${id}`);
   }
 }
