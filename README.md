@@ -32,28 +32,7 @@ The system uses a 1-to-Many relationship between Users and Tasks.
         long LastUpdatedOn "Modified Unix Timestamp"
     }
     ```
- 
- 
-### Data Dictionary
-Table: Users
-Column Name	Data Type	Nullable	Key	 Default	Description
-Id	        Guid	        No	     PK	 NewGuid()	Primary unique identifier for the user.
-FirstName	String	        No	      -	    -	    User's first name.
-LastName	String	        Yes	      -	    -	    User's last name.
-Email	    String	        No	     UK	    -	    Unique login email address.
-PasswordHash	String	    No	      -	    -	    Securely hashed password string.
-Role	    Integer	        No	      -	     1	     Authorization level (0=Admin, 1=Member).
 
-Table: TodoTasks
-Column Name	 Data Type	Nullable	Key	  Default	   Description
-Id	            Guid	 No	        PK	  NewGuid()	   Primary unique identifier for the task.
-Title	        String	 No	        -	    -	       Summary title of the task.
-Description	    String	 Yes	    -	    -	        Detailed task description.
-DueDate	        DateOnly  No	    -	    -	        Targeted date for task completion.
-Status	        Integer	  No	    -	    0	        0=Pending, 1=InProgress, 2=Completed.
-UserId	        Guid	  No	    FK	    -	        Links the task to its creator (User.Id).
-CreatedOn	    Long	  No	    -	                Current	Unix timestamp of record creation.
-LastUpdatedOn	Long	  No	    -	                Current	Unix timestamp of the last modification.
 
 ### Indexes
 
